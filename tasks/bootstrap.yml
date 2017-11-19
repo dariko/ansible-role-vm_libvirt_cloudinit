@@ -1,0 +1,69 @@
+-   name: vm directory
+    delegate_to: "{{vm_hoster}}"
+    file:
+        path: "{{vm_dir}}"
+        state: directory
+
+-   name: read generated macs
+    delegate_to: "{{vm_hoster}}"
+    shell: |
+        {% for n in vm_networks %}
+        echo -n {{n.bridge}}\;
+        virsh dumpxml {{vm_hostname}}|xmllint --xpath "string(//interface[source/@bridge='{{n.bridge}}']/mac/@address)" -
+        echo
+        {% endfor %}
+    register: out_generated_macs
+
+-   name: set fact libvirt_generated_macs
+    set_fact:
+        libvirt_generated_macs: |
+            [{% for line in out_generated_macs.stdout_lines %}
+            {
+                'bridge':'{{line.split(';')[0]}}',
+                'mac':'{{line.split(';')[1]}}'
+            }{{',' if not loop.last else ''}}
+            {% endfor %}]
+
+-   name: template user-data
+    delegate_to: "{{vm_hoster}}"
+    template:
+        src: user-data.j2
+        dest: "{{vm_dir}}/user-data"
+
+-   name: template meta-data
+    delegate_to: "{{vm_hoster}}"
+    template:
+        src: meta-data.j2
+        dest: "{{vm_dir}}/meta-data"
+
+-   name: template network-config
+    delegate_to: "{{vm_hoster}}"
+    template:
+        src: network-config.v1.j2
+        dest: "{{vm_dir}}/network-config"
+
+-   name: nocloud genisoimage
+    delegate_to: "{{vm_hoster}}"
+    shell: |
+        genisoimage  -output {{vm_cloudinit_iso}} -volid cidata -joliet -rock user-data meta-data network-config
+    args:
+        chdir: "{{vm_dir}}"
+
+-   name: download image
+    delegate_to: "{{vm_hoster}}"
+    get_url:
+        url: "{{vm_image_url}}"
+        dest: "{{vm_dir}}/disk.img"
+
+-   name: resize image
+    delegate_to: "{{vm_hoster}}"
+    shell: |
+        qemu-img resize {{vm_dir}}/disk.img {{vm_image_size}}G
+
+-   name: create volumes
+    delegate_to: "{{vm_hoster}}"
+    shell: |
+        {% for volume in vm_volumes %}
+        qemu-img create -f qcow2 {{vm_dir}}/volume_{{loop.index}}.img {{volume.size}}G
+        {% endfor %}
+    when: vm_volumes|length > 0

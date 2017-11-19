@@ -1,0 +1,29 @@
+-   include_tasks: deprovision.yml
+    when: vm_rebuild or vm_deprovision
+
+-   include_tasks: provision.yml
+    when: not vm_deprovision
+
+-   name: start vm
+    delegate_to: "{{vm_hoster}}"
+    virt:
+        name: "{{vm_hostname}}"
+        state: running
+        autostart: true
+    when: vm_start
+
+-   name: autostart vm
+    delegate_to: "{{vm_hoster}}"
+    virt:
+        name: "{{vm_hostname}}"
+        autostart: true
+        command: status
+    when: vm_start
+
+-   name: wait for tcp22
+    listen: bootstrap vm
+    delegate_to: "{{vm_hoster}}"
+    wait_for:
+        host: "{{vm_networks[0].address|ipaddr('address')}}"
+        port: 22
+    when: vm_wait_for_tcp22

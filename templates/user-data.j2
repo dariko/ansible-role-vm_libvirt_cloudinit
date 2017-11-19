@@ -1,0 +1,28 @@
+#cloud-config
+users:
+-   default
+-   name: {{vm_username}}
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    lock_passwd: true
+{% if vm_ssh_keys|length > 0 %}
+    ssh-authorized-keys: 
+{% for key in vm_ssh_keys %}
+    -   "{{key}}"
+{% endfor %}
+{% endif %}
+write_files:
+-   content: |
+{%if vm_networks|length > 0%}
+        127.0.0.1       localhost localhost.localdomain
+        {{vm_networks[0].address|ipaddr('address')}}       {{vm_hostname}}
+{% else %}
+        127.0.0.1       localhost localhost.localdomain {{vm_hostname}}
+{% endif %}
+    path: /etc/hosts
+    owner: root:root
+    permissions: '0644'
+runcmd:
+-   apt-get update && apt-get install -y python-minimal || true
+-   yum install python2 || true
+manage_etc_hosts: false

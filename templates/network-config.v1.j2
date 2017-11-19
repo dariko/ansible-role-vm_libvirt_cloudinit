@@ -1,0 +1,17 @@
+version: 1
+config:
+{% set i=0 %}
+{% for network in vm_networks %}
+-   type: physical
+    name: eth{{i}}
+    mac_address: {{(libvirt_generated_macs|selectattr('bridge','equalto',network.bridge)|list|first).mac}}
+    subnets:
+    -   type: static
+        address: {{network.address}}
+{% if 'gateway' in network %}
+        gateway: {{network.gateway}}
+{% endif %}
+        dns_nameservers:
+        -   8.8.8.8
+{% set i=i+1 %}
+{% endfor %}

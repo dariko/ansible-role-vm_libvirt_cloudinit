@@ -1,0 +1,51 @@
+<domain type='kvm'>
+  <name>{{vm_hostname}}</name>
+  <memory>{{vm_memory_mb*1024}}</memory>
+  <vcpu>{{vm_cpus}}</vcpu>
+  <os>
+    <type>hvm</type>
+    <boot dev='hd' />
+  </os>
+  <features>
+    <acpi />
+  </features>
+  <clock offset='utc' />
+  <on_poweroff>destroy</on_poweroff>
+  <on_reboot>restart</on_reboot>
+  <on_crash>destroy</on_crash>
+  <devices>
+    <emulator>/usr/bin/qemu-system-x86_64</emulator>
+    <serial type='pty'>
+      <target port='0' />
+    </serial>
+    <console type='pty'>
+      <target type='serial' port='0' />
+    </console>
+{% for network in vm_networks %}
+    <interface type='bridge'>
+      <source bridge='{{network.bridge}}' />
+      <model type='virtio'/>
+    </interface>
+{% endfor %}
+    <input type='mouse' bus='ps2' />
+    <disk type='file' device='disk'>
+      <driver name='qemu' type='qcow2' cache='none' />
+      <source file='{{vm_dir}}/disk.img' />
+      <target dev='vda' bus='virtio' />
+    </disk>
+{% set letters='bcdefghijklmnopqrstuvwxy' %}
+{% for volume in vm_volumes %}
+    <input type='mouse' bus='ps2' />
+    <disk type='file' device='disk'>
+      <driver name='qemu' type='qcow2' cache='none' />
+      <source file='{{vm_dir}}/volume_{{loop.index}}.img' />
+      <target dev='vd{{letters[loop.index]}}' bus='virtio' />
+    </disk>
+{% endfor %}
+    <disk type='file' device='cdrom'>
+      <driver name='qemu' type='raw'/>
+      <source file='{{vm_cloudinit_iso}}'/>
+      <target dev='vdz' bus='virtio'/>
+    </disk>
+  </devices>
+</domain>

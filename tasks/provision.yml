@@ -1,0 +1,12 @@
+-   name: define libvirt domain
+    delegate_to: "{{vm_hoster}}"
+    virt:
+        name: "{{vm_hostname}}"
+        command: define
+        xml: "{{lookup('template','domain.xml.j2')}}"
+    register: out_libvirt_domain
+    notify:
+    -   bootstrap vm
+
+-   meta: flush_handlers
+    
