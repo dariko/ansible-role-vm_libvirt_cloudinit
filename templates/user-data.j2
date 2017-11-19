@@ -26,3 +26,4 @@ runcmd:
 -   apt-get update && apt-get install -y python-minimal || true
 -   yum install python2 || true
 manage_etc_hosts: false
+packages: {{vm_packages|to_json}}

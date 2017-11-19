@@ -12,3 +12,4 @@ vm_start: true
 vm_username: ansible
 vm_volumes: []
 vm_wait_for_tcp22: "{{vm_start}}"
+vm_packages: []
