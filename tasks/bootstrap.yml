@@ -13,6 +13,7 @@
         echo
         {% endfor %}
     register: out_generated_macs
+    when: vm_networks != []
 
 -   name: set fact libvirt_generated_macs
     set_fact:
@@ -23,6 +24,7 @@
                 'mac':'{{line.split(';')[1]}}'
             }{{',' if not loop.last else ''}}
             {% endfor %}]
+    when: vm_networks != []
 
 -   name: template user-data
     delegate_to: "{{vm_hoster}}"

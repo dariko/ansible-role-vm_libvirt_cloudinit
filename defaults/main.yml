@@ -6,6 +6,7 @@ vm_hostname: "{{inventory_hostname}}"
 vm_image_size: 5G
 vm_image_url: "https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-disk1.img"
 vm_memory_mb: 512
+vm_networks: []
 vm_rebuild: false
 vm_ssh_keys: []
 vm_start: true
