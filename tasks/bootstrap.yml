@@ -38,11 +38,19 @@
         src: meta-data.j2
         dest: "{{vm_dir}}/meta-data"
 
--   name: template network-config
+-   name: template network-config v1
     delegate_to: "{{vm_hoster}}"
     template:
         src: network-config.v1.j2
         dest: "{{vm_dir}}/network-config"
+    when: vm_network_config_version|string=="1"
+
+-   name: template network-config v2
+    delegate_to: "{{vm_hoster}}"
+    template:
+        src: network-config.v2.j2
+        dest: "{{vm_dir}}/network-config"
+    when: vm_network_config_version|string=="2"
 
 -   name: nocloud genisoimage
     delegate_to: "{{vm_hoster}}"
