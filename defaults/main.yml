@@ -17,3 +17,4 @@ vm_packages: []
 vm_cloud_config_userdata: ""
 vm_network_config_version: "1"
 vm_allow_nested: false
+vm_emulator_path: "/usr/libexec/qemu-kvm"
