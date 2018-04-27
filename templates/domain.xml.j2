@@ -22,10 +22,18 @@
       <target type='serial' port='0' />
     </console>
 {% for network in vm_networks %}
+{% set interface_type = network.type|default('bridge') %}
+{% if interface_type == 'bridge' %}
     <interface type='bridge'>
-      <source bridge='{{network.bridge}}' />
+      <source bridge='{{network.parent}}' />
       <model type='virtio'/>
     </interface>
+{% elif interface_type == 'direct' %}
+    <interface type='direct'>
+      <source dev='{{network.parent}}' mode='bridge'/>
+      <model type='virtio'/>
+    </interface>
+{% endif %}
 {% endfor %}
     <input type='mouse' bus='ps2' />
     <disk type='file' device='disk'>

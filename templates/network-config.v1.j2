@@ -4,11 +4,12 @@ config:
 {% for network in vm_networks %}
 -   type: physical
     name: eth{{i}}
-    mac_address: {{(libvirt_generated_macs|selectattr('bridge','equalto',network.bridge)|list|first).mac}}
+    mac_address: {{(libvirt_generated_macs|selectattr('id','equalto',network.id|default(network.parent))|list|first).mac}}
 {% if 'address' in network %}
     subnets:
     -   type: static
-        address: {{network.address}}
+        address: {{network.address|ipaddr('address')}}
+        netmask: {{network.address|ipaddr('netmask')}}
 {% if 'gateway' in network %}
         gateway: {{network.gateway}}
 {% endif %}

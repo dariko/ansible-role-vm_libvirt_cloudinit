@@ -2,17 +2,14 @@ version: 2
 ethernets:
 {% set i=0 %}
 {% for network in vm_networks %}
-    interface{{i}}:
+    eth{{i}}:
         match:
             macaddress: "{{(libvirt_generated_macs|selectattr('bridge','equalto',network.bridge)|list|first).mac}}"
-        set-name: eth{{i}}
-    eth{{i}}:
         dhcp4: false
         dhcp6: false
         addresses:
-        -   "{{network.address}}"
+        -   "{{network.address|ipaddr('address')}}"
         nameservers:
-            #search: [foo.local, bar.local]
             addresses: [8.8.8.8]
 {% if 'gateway' in network %}
         gateway4: {{network.gateway}}

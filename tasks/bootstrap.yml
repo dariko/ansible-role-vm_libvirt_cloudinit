@@ -8,8 +8,8 @@
     delegate_to: "{{vm_hoster}}"
     shell: |
         {% for n in vm_networks %}
-        echo -n {{n.bridge}}\;
-        virsh dumpxml {{vm_hostname}}|xmllint --xpath "string(//interface[source/@bridge='{{n.bridge}}']/mac/@address)" -
+        echo -n {{n.get('id',n.parent)}}\;
+        virsh dumpxml {{vm_hostname}}|xmllint --xpath "string(//interface[source/@{{n.type}}='{{n.parent}}']/mac/@address)" -
         echo
         {% endfor %}
     register: out_generated_macs
@@ -20,7 +20,7 @@
         libvirt_generated_macs: |
             [{% for line in out_generated_macs.stdout_lines %}
             {
-                'bridge':'{{line.split(';')[0]}}',
+                'id':'{{line.split(';')[0]}}',
                 'mac':'{{line.split(';')[1]}}'
             }{{',' if not loop.last else ''}}
             {% endfor %}]
