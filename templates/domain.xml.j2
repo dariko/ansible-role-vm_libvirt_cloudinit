@@ -9,6 +9,9 @@
   <features>
     <acpi />
   </features>
+{% if vm_allow_nested %}
+  <cpu mode='host-passthrough'/>
+{% endif %}
   <clock offset='utc' />
   <on_poweroff>destroy</on_poweroff>
   <on_reboot>restart</on_reboot>
