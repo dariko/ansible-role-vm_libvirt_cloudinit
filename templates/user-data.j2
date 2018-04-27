@@ -13,3 +13,4 @@ users:
 {% endfor %}
 {% endif %}
 packages: {{vm_packages|to_json}}
+{{ vm_cloud_config_userdata }}
