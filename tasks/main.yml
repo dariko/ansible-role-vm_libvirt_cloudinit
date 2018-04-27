@@ -5,7 +5,7 @@
     when: not vm_deprovision
 
 -   name: start vm
-    delegate_to: "{{vm_hoster}}"
+    delegate_to: "{{vm_host}}"
     virt:
         name: "{{vm_hostname}}"
         state: running
@@ -17,7 +17,7 @@
     delay: 2
 
 -   name: autostart vm
-    delegate_to: "{{vm_hoster}}"
+    delegate_to: "{{vm_host}}"
     virt:
         name: "{{vm_hostname}}"
         autostart: true
@@ -26,7 +26,7 @@
 
 -   name: wait for tcp22
     listen: bootstrap vm
-    delegate_to: "{{vm_hoster}}"
+    delegate_to: "{{vm_host}}"
     wait_for:
         host: "{{vm_networks[0].address|ipaddr('address')}}"
         port: 22

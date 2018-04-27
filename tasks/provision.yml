@@ -1,5 +1,5 @@
 -   name: define libvirt domain
-    delegate_to: "{{vm_hoster}}"
+    delegate_to: "{{vm_host}}"
     virt:
         name: "{{vm_hostname}}"
         command: define

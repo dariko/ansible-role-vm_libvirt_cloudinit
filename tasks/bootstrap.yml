@@ -1,11 +1,11 @@
 -   name: vm directory
-    delegate_to: "{{vm_hoster}}"
+    delegate_to: "{{vm_host}}"
     file:
         path: "{{vm_dir}}"
         state: directory
 
 -   name: read generated macs
-    delegate_to: "{{vm_hoster}}"
+    delegate_to: "{{vm_host}}"
     shell: |
         {% for n in vm_networks %}
         echo -n {{n.get('id',n.parent)}}\;
@@ -27,51 +27,51 @@
     when: vm_networks != []
 
 -   name: template user-data
-    delegate_to: "{{vm_hoster}}"
+    delegate_to: "{{vm_host}}"
     template:
         src: user-data.j2
         dest: "{{vm_dir}}/user-data"
 
 -   name: template meta-data
-    delegate_to: "{{vm_hoster}}"
+    delegate_to: "{{vm_host}}"
     template:
         src: meta-data.j2
         dest: "{{vm_dir}}/meta-data"
 
 -   name: template network-config v1
-    delegate_to: "{{vm_hoster}}"
+    delegate_to: "{{vm_host}}"
     template:
         src: network-config.v1.j2
         dest: "{{vm_dir}}/network-config"
     when: vm_network_config_version|string=="1"
 
 -   name: template network-config v2
-    delegate_to: "{{vm_hoster}}"
+    delegate_to: "{{vm_host}}"
     template:
         src: network-config.v2.j2
         dest: "{{vm_dir}}/network-config"
     when: vm_network_config_version|string=="2"
 
 -   name: nocloud genisoimage
-    delegate_to: "{{vm_hoster}}"
+    delegate_to: "{{vm_host}}"
     shell: |
         genisoimage  -output {{vm_cloudinit_iso}} -volid cidata -joliet -rock user-data meta-data network-config
     args:
         chdir: "{{vm_dir}}"
 
 -   name: download image
-    delegate_to: "{{vm_hoster}}"
+    delegate_to: "{{vm_host}}"
     get_url:
         url: "{{vm_image_url}}"
         dest: "{{vm_dir}}/disk.img"
 
 -   name: resize image
-    delegate_to: "{{vm_hoster}}"
+    delegate_to: "{{vm_host}}"
     shell: |
         qemu-img resize {{vm_dir}}/disk.img {{vm_image_size_gb}}G
 
 -   name: create volumes
-    delegate_to: "{{vm_hoster}}"
+    delegate_to: "{{vm_host}}"
     shell: |
         {% for volume in vm_volumes %}
         qemu-img create -f qcow2 {{vm_dir}}/volume_{{loop.index}}.img {{volume.size}}G

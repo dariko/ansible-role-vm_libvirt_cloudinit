@@ -1,11 +1,11 @@
 -   name: destroy vm
-    delegate_to: "{{vm_hoster}}"
+    delegate_to: "{{vm_host}}"
     shell:
         virsh destroy {{vm_hostname}} || true;
         virsh undefine {{vm_hostname}} || true;
 
 -   name: remove vm data
-    delegate_to: "{{vm_hoster}}"
+    delegate_to: "{{vm_host}}"
     file:
         path: "{{vm_dir}}"
         state: absent
