@@ -60,7 +60,7 @@
 -   name: resize image
     delegate_to: "{{vm_hoster}}"
     shell: |
-        qemu-img resize {{vm_dir}}/disk.img {{vm_image_size}}G
+        qemu-img resize {{vm_dir}}/disk.img {{vm_image_size_gb}}G
 
 -   name: create volumes
     delegate_to: "{{vm_hoster}}"

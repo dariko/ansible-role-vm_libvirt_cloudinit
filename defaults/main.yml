@@ -3,7 +3,7 @@ vm_cloudinit_iso: "{{vm_dir}}/nocloud.iso"
 vm_cpus: 2
 vm_deprovision: false
 vm_hostname: "{{inventory_hostname}}"
-vm_image_size: 5G
+vm_image_size_gb: 5
 vm_image_url: "https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-disk1.img"
 vm_memory_mb: 512
 vm_networks: []
