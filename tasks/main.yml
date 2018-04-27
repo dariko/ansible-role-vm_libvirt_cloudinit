@@ -11,6 +11,10 @@
         state: running
         autostart: true
     when: vm_start
+    register: out_vm_start
+    retries: 2
+    until: not out_vm_start|failed
+    delay: 2
 
 -   name: autostart vm
     delegate_to: "{{vm_hoster}}"
