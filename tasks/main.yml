@@ -35,3 +35,8 @@
         host: "{{vm_networks[0].address|ipaddr('address')}}"
         port: 22
     when: vm_wait_for_tcp22
+
+-   name: sleep
+    pause:
+        seconds: "{{vm_start_sleep}}"
+    when: vm_started

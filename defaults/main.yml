@@ -24,3 +24,4 @@ vm_drives:
     size_gb: 5
 vm_nameservers:
 -   8.8.8.8
+vm_start_sleep: 5
