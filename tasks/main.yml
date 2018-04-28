@@ -16,6 +16,10 @@
     until: not out_vm_start|failed
     delay: 2
 
+-   name: set fact vm_started
+    set_fact:
+        vm_started: "{{out_vm_start.changed if out_vm_start is defined else False}}"
+
 -   name: autostart vm
     delegate_to: "{{vm_host}}"
     virt:
