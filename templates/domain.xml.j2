@@ -24,6 +24,7 @@
     <console type='pty'>
       <target type='serial' port='0' />
     </console>
+    <input type='mouse' bus='ps2' />
 {% for network in vm_networks %}
 {% set interface_type = network.type|default('bridge') %}
 {% if interface_type == 'bridge' %}
@@ -38,20 +39,15 @@
     </interface>
 {% endif %}
 {% endfor %}
-    <input type='mouse' bus='ps2' />
+{% set letters='abcdefghijklmnopqrstuvwxy' %}
+{% for drive in vm_drives %}
+{% if drive.type == 'file' %}
     <disk type='file' device='disk'>
-      <driver name='qemu' type='qcow2' cache='none' />
-      <source file='{{vm_dir}}/disk.img' />
-      <target dev='vda' bus='virtio' />
-    </disk>
-{% set letters='bcdefghijklmnopqrstuvwxy' %}
-{% for volume in vm_volumes %}
-    <input type='mouse' bus='ps2' />
-    <disk type='file' device='disk'>
-      <driver name='qemu' type='qcow2' cache='none' />
-      <source file='{{vm_dir}}/volume_{{loop.index}}.img' />
+      <driver name='qemu' type='{{drive.format|default('qcow2')}}' cache='{{drive.cache|default('none')}}' />
+      <source file='{{vm_dir}}/drive_{{loop.index}}.img' />
       <target dev='vd{{letters[loop.index]}}' bus='virtio' />
     </disk>
+{% endif %}
 {% endfor %}
     <disk type='file' device='cdrom'>
       <driver name='qemu' type='raw'/>

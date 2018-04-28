@@ -59,21 +59,20 @@
     args:
         chdir: "{{vm_dir}}"
 
--   name: download image
-    delegate_to: "{{vm_host}}"
-    get_url:
-        url: "{{vm_image_url}}"
-        dest: "{{vm_dir}}/disk.img"
-
--   name: resize image
+-   name: create drives
     delegate_to: "{{vm_host}}"
     shell: |
-        qemu-img resize {{vm_dir}}/disk.img {{vm_image_size_gb}}G
-
--   name: create volumes
-    delegate_to: "{{vm_host}}"
-    shell: |
-        {% for volume in vm_volumes %}
-        qemu-img create -f qcow2 {{vm_dir}}/volume_{{loop.index}}.img {{volume.size}}G
+        {% for drive in vm_drives %}
+        {% if drive.type=='file' %}
+        {% set drive_path = "%s/drive_%s.img" % (vm_dir, loop.index) %}
+        {% if drive.source|default(False) %}
+        cp "{{drive.source}}" "{{drive_path}}"
+        {% if drive.size|default('False') %}
+        qemu-img resize "{{drive_path}}" {{drive.size_gb}}G
+        {% endif %}
+        {% else %}
+        qemu-img create -f qcow2 {{drive_path}} {{drive.size}}G
+        {% endif %}
+        {% endif %}
         {% endfor %}
-    when: vm_volumes|length > 0
+    when: vm_drives|length > 0
