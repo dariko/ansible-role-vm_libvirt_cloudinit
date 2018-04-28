@@ -13,8 +13,7 @@ config:
 {% if 'gateway' in network %}
         gateway: {{network.gateway}}
 {% endif %}
-        dns_nameservers:
-        -   8.8.8.8
+        dns_nameservers: {{vm_nameservers|to_json}}
 {% endif %}
 {% set i=i+1 %}
 {% endfor %}

@@ -22,3 +22,5 @@ vm_drives:
     format: qcow2
     source: https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-disk1.img
     size_gb: 5
+vm_nameservers:
+-   8.8.8.8
