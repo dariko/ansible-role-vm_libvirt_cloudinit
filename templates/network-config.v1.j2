@@ -1,9 +1,8 @@
 version: 1
 config:
-{% set i=0 %}
 {% for network in vm_networks %}
 -   type: physical
-    name: eth{{i}}
+    name: eth{{loop.index-1}}
     mac_address: {{(libvirt_generated_macs|selectattr('id','equalto',network.id|default(network.parent))|list|first).mac}}
 {% if 'address' in network %}
     subnets:
@@ -15,5 +14,4 @@ config:
 {% endif %}
         dns_nameservers: {{vm_nameservers|to_json}}
 {% endif %}
-{% set i=i+1 %}
 {% endfor %}
