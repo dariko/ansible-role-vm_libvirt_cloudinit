@@ -13,5 +13,7 @@ config:
         gateway: {{network.gateway}}
 {% endif %}
         dns_nameservers: {{vm_nameservers|to_json}}
+{% else %}
+    subnets: []
 {% endif %}
 {% endfor %}
