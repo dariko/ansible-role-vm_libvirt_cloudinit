@@ -47,6 +47,12 @@
       <source file='{{vm_dir}}/drive_{{loop.index}}.img' />
       <target dev='vd{{letters[loop.index]}}' bus='virtio' />
     </disk>
+{% elif drive.type == 'block' %}
+    <disk type='block' device='disk'>
+      <driver name='qemu' type='raw' cache='{{drive.cache|default('none')}}' />
+      <source dev='{{drive.path}}' />
+      <target dev='vd{{letters[loop.index]}}' bus='virtio' />
+    </disk>
 {% endif %}
 {% endfor %}
     <disk type='file' device='cdrom'>

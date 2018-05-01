@@ -9,3 +9,15 @@
     file:
         path: "{{vm_dir}}"
         state: absent
+
+-   name: remove non-file disks
+    delegate_to: "{{vm_host}}"
+    shell: |
+        {% for drive in vm_drives %}
+            {% if drive.type=='block' %}
+                {% if drive.manage|default(False) %}
+        lvremove -f {{drive.path}} || exit 1
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        echo

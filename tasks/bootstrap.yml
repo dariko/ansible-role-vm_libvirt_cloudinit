@@ -63,16 +63,22 @@
     delegate_to: "{{vm_host}}"
     shell: |
         {% for drive in vm_drives %}
-        {% if drive.type=='file' %}
-        {% set drive_path = "%s/drive_%s.img" % (vm_dir, loop.index) %}
-        {% if drive.source|default(False) %}
+            {% if drive.type=='file' %}
+                {% set drive_path = "%s/drive_%s.img" % (vm_dir, loop.index) %}
+                {% if drive.source|default(False) %}
         cp "{{drive.source}}" "{{drive_path}}"
-        {% if drive.size|default('False') %}
+                    {% if drive.size|default('False') %}
         qemu-img resize "{{drive_path}}" {{drive.size_gb}}G
-        {% endif %}
-        {% else %}
+                    {% endif %}
+                {% else %}
         qemu-img create -f qcow2 {{drive_path}} {{drive.size}}G
-        {% endif %}
-        {% endif %}
+                {% endif %}
+            {% elif drive.type=='block' %}
+                {% if drive.manage|default(False) %}
+        lvcreate --name "{{drive.path.split("/")[3]}}" \
+            -L "{{drive.size_gb}}G" \
+            "{{drive.path.split("/")[2]}}"
+                {% endif %}
+            {% endif %}
         {% endfor %}
     when: vm_drives|length > 0
