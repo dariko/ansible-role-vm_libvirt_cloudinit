@@ -9,7 +9,7 @@ vm_networks: []
 vm_rebuild: false
 vm_start: true
 vm_wait_for_tcp22: "{{vm_start}}"
-vm_cloud_config_userdata: {}
+vm_userdata: {}
 vm_network_config_version: "1"
 vm_allow_nested: false
 vm_emulator_path: "/usr/libexec/qemu-kvm"
