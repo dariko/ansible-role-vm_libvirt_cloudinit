@@ -37,6 +37,19 @@
       <source dev='{{network.parent}}' mode='bridge'/>
       <model type='virtio'/>
     </interface>
+{% elif interface_type in ['ovs','openvswitch'] %}
+    <interface type='bridge'>
+      <source bridge='{{network.parent}}'/>
+      <virtualport type='openvswitch'/>
+{% if network.get('trunks',False) %}
+        <vlan trunk='yes'>
+{% for tag in network.trunks %}
+          <tag id='tag.id'>
+{% endfor %}
+        </vlan>
+{% endif %}
+      <model type='virtio'/>
+    </interface>
 {% endif %}
 {% endfor %}
 {% set letters='abcdefghijklmnopqrstuvwxy' %}
