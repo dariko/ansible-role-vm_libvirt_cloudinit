@@ -99,6 +99,9 @@
             -L "{{drive.size_gb}}G" \
             "{{drive.path.split("/")[2]}}"
                 {% endif %}
+                {% if 'source' in drive.keys() %}
+        qemu-img convert -O raw {{drive.source}} {{drive.path}}
+                {% endif %}
             {% endif %}
         {% endfor %}
     when: vm_drives|length > 0
