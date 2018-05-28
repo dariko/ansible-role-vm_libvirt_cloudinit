@@ -27,18 +27,22 @@
     <input type='mouse' bus='ps2' />
 {% for network in vm_networks %}
 {% set interface_type = network.type|default('bridge') %}
+{% set mac_config="<mac address='%s'/>" % network.mac if 'mac' in network.keys() else "" %}
 {% if interface_type == 'bridge' %}
     <interface type='bridge'>
+{{ mac_config }}
       <source bridge='{{network.parent}}' />
       <model type='virtio'/>
     </interface>
 {% elif interface_type == 'direct' %}
     <interface type='direct'>
+{{ mac_config }}
       <source dev='{{network.parent}}' mode='bridge'/>
       <model type='virtio'/>
     </interface>
 {% elif interface_type in ['ovs','openvswitch'] %}
     <interface type='bridge'>
+{{ mac_config }}
       <source bridge='{{network.parent}}'/>
       <virtualport type='openvswitch'/>
 {% if network.get('trunks',False) %}

@@ -4,27 +4,47 @@
         path: "{{vm_dir}}"
         state: directory
 
--   name: read generated macs
-    delegate_to: "{{vm_host}}"
-    shell: |
-        {% for n in vm_networks %}
-        echo -n {{n.get('id',n.parent)}}\;
-        virsh dumpxml {{vm_hostname}}|xmllint --xpath "string(//interface[source/@{{n.type}}='{{n.parent}}']/mac/@address)" -
-        echo
-        {% endfor %}
-    register: out_generated_macs
-    when: vm_networks != []
+-   name: read macs from libvirt domain (match by parent)
+    when: vm_identify_interfaces_by_parent
+    block:
+    -   name: read generated macs (match by parent)
+        delegate_to: "{{vm_host}}"
+        shell: |
+            {% for n in vm_networks %}
+            echo -n {{n.get('id',n.parent)}}\;
+            virsh dumpxml {{vm_hostname}}|xmllint --xpath "string(//interface[source/@{{n.type}}='{{n.parent}}']/mac/@address)" -
+            echo
+            {% endfor %}
+        register: out_generated_macs
+        when: vm_networks != []
 
--   name: set fact libvirt_generated_macs
-    set_fact:
-        libvirt_generated_macs: |
-            [{% for line in out_generated_macs.stdout_lines %}
-            {
-                'id':'{{line.split(';')[0]}}',
-                'mac':'{{line.split(';')[1]}}'
-            }{{',' if not loop.last else ''}}
-            {% endfor %}]
-    when: vm_networks != []
+    -   name: set fact libvirt_generated_macs (match by parent)
+        set_fact:
+            libvirt_generated_macs: |
+                [{% for line in out_generated_macs.stdout_lines %}
+                {
+                    'id':'{{line.split(';')[0]}}',
+                    'mac':'{{line.split(';')[1]}}'
+                }{{',' if not loop.last else ''}}
+                {% endfor %}]
+        when: vm_networks != []
+
+-   name: read macs from libvirt domain (match by order)
+    when: not vm_identify_interfaces_by_parent
+    block:
+    -   name: read generated macs (match by order)
+        delegate_to: "{{vm_host}}"
+        shell: |
+            virsh dumpxml {{vm_hostname}}|xmllint --xpath "//interface/mac/@address" - |sed 's/ address=/\n/g' |cut -d '"' -f 2|grep -v ^$
+        register: out_generated_macs
+        when: vm_networks != []
+
+    -   name: set fact libvirt_generated_macs (match by order)
+        set_fact:
+            libvirt_generated_macs: "{{out_generated_macs.stdout_lines}}"
+        when: vm_networks != []
+
+
 
 -   name: template user-data
     delegate_to: "{{vm_host}}"

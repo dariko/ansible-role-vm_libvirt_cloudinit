@@ -23,3 +23,4 @@ vm_nameservers:
 vm_start_sleep: 5
 vm_autostart: true
 vm_delete: false
+vm_identify_interfaces_by_parent: false
