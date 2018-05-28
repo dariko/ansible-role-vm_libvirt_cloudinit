@@ -16,7 +16,7 @@
         {% for drive in vm_drives %}
             {% if drive.type=='block' %}
                 {% if drive.manage|default(False) %}
-        lvremove -f {{drive.path}} || exit 1
+        [ -b {{drive.path}} ] && lvremove -f {{drive.path}}
                 {% endif %}
             {% endif %}
         {% endfor %}
