@@ -45,11 +45,19 @@
 {{ mac_config }}
       <source bridge='{{network.parent}}'/>
       <virtualport type='openvswitch'/>
-{% if network.get('trunks',False) %}
+{% if network.get('trunk',False) %}
         <vlan trunk='yes'>
-{% for tag in network.trunks %}
-          <tag id='tag.id'>
+{% for tag in network.trunk %}
+          <tag id='{{tag}}'/>
 {% endfor %}
+        </vlan>
+{% elif network.get('access',False) %}
+        <vlan>
+            <tag id='{{network.access}}'/>
+        </vlan>
+{% elif network.get('access',False) %}
+        <vlan>
+            <tag id='{{network.access}}'/>
         </vlan>
 {% endif %}
       <model type='virtio'/>
