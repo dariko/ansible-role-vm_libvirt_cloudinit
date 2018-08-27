@@ -80,7 +80,11 @@
             {% if drive.type=='file' %}
                 {% set drive_path = "%s/drive_%s.img" % (vm_dir, loop.index) %}
                 {% if drive.source|default(False) %}
-        cp "{{drive.source}}" "{{drive_path}}"
+        #cp "{{drive.source}}" "{{drive_path}}"
+        qemu-img convert -o lazy_refcounts=on,preallocation=metadata \
+                         -O qcow2 \
+                         "{{drive.source}}" \
+                         "{{drive_path}}"
                     {% if drive.size|default('False') %}
         qemu-img resize "{{drive_path}}" {{drive.size_gb}}G
                     {% endif %}
