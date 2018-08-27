@@ -21,6 +21,11 @@
         command: define
         xml: "{{vm_tmp_xml}}"
     register: out_libvirt_domain
+
+-   name: bootstrap vm
+    debug:
+        msg: bootstrap if necessary
+    changed_when: vm_do_bootstrap and (out_libvirt_domain|changed)
     notify:
     -   bootstrap vm
 

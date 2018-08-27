@@ -30,7 +30,6 @@
             command: status
 
     -   name: wait for tcp22
-        listen: bootstrap vm
         delegate_to: "{{vm_host}}"
         wait_for:
             host: "{{vm_networks[0].address|ipaddr('address')}}"

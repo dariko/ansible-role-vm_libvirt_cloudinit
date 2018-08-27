@@ -84,10 +84,17 @@
     </disk>
 {% endif %}
 {% endfor %}
+{% if vm_do_bootstrap %}
     <disk type='file' device='cdrom'>
       <driver name='qemu' type='raw'/>
       <source file='{{vm_cloudinit_iso}}'/>
       <target dev='vdz' bus='virtio'/>
     </disk>
+{% endif %}
+{% if vm_vnc_port!=0 %}
+    <graphics type='vnc' port='{{vm_vnc_port}}' autoport='no' listen='127.0.0.1'>
+      <listen type='address' address='{{vm_vnc_address}}'/>
+    </graphics>
+{% endif %}
   </devices>
 </domain>
