@@ -69,7 +69,11 @@
 {% if drive.type == 'file' %}
     <disk type='file' device='disk'>
       <driver name='qemu' type='{{drive.format|default('qcow2')}}' cache='{{drive.cache|default('none')}}' />
-      <source file='{{vm_dir}}/drive_{{loop.index}}.img' />
+{% if 'path' in drive.keys() %}
+        <source file='{{drive.path}}'/>
+{% else %}
+        <source file='{{vm_dir}}/drive_{{loop.index}}.img' />
+{% endif %}
       <target dev='vd{{letters[loop.index]}}' bus='virtio' />
     </disk>
 {% elif drive.type == 'block' %}

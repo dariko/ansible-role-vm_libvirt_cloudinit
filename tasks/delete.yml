@@ -10,7 +10,7 @@
         path: "{{vm_dir}}"
         state: absent
 
--   name: remove non-file disks
+-   name: remove lvs and static drives
     delegate_to: "{{vm_host}}"
     shell: |
         {% for drive in vm_drives %}
@@ -18,6 +18,9 @@
                 {% if drive.manage|default(False) %}
         [ -b {{drive.path}} ] && lvremove -f {{drive.path}}
                 {% endif %}
+            {% endif %}
+            {% if 'path' in drive.keys() %}
+        rm {{drive.path}}
             {% endif %}
         {% endfor %}
         echo
