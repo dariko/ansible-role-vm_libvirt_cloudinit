@@ -25,3 +25,5 @@ vm_autostart: true
 vm_delete: false
 vm_identify_interfaces_by_parent: false
 vm_do_bootstrap: true
+vm_vnc_address: 127.0.0.1
+vm_vnc_port: 0
