@@ -1,9 +1,3 @@
--   name: vm directory
-    delegate_to: "{{vm_host}}"
-    file:
-        path: "{{vm_dir}}"
-        state: directory
-
 -   name: read macs from libvirt domain (match by parent)
     when: vm_identify_interfaces_by_parent
     block:

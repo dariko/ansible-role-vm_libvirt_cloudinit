@@ -1,9 +1,25 @@
+-   name: vm directory
+    delegate_to: "{{vm_host}}"
+    file:
+        path: "{{vm_dir}}"
+        state: directory
+
+-   name: set fact vm_tmp_xml
+    set_fact:
+        vm_tmp_xml: "{{lookup('template','domain.xml.j2')}}"
+
+-   name: dump xml
+    delegate_to: "{{vm_host}}"
+    copy:
+        content: "{{vm_tmp_xml}}"
+        dest: "{{vm_dir}}/domain.xml"
+
 -   name: define libvirt domain
     delegate_to: "{{vm_host}}"
     virt:
         name: "{{vm_hostname}}"
         command: define
-        xml: "{{lookup('template','domain.xml.j2')}}"
+        xml: "{{vm_tmp_xml}}"
     register: out_libvirt_domain
     notify:
     -   bootstrap vm
