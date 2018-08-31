@@ -4,9 +4,9 @@ config:
 -   type: physical
     name: eth{{loop.index-1}}
 {% if vm_identify_interfaces_by_parent %}
-    mac_address: {{(libvirt_generated_macs|selectattr('id','equalto',network.id|default(network.parent))|list|first).mac|lower}}
+    mac_address: {{(libvirt_generated_macs|selectattr('id','equalto',network.id|default(network.parent))|list|first).mac}}
 {% else %}
-    mac_address: {{libvirt_generated_macs[loop.index-1]|lower}}
+    mac_address: {{libvirt_generated_macs[loop.index-1]}}
 {% endif %}
 {% if 'mtu' in network %}
     mtu: {{network.mtu}}
