@@ -208,7 +208,7 @@ Path to the qemu-kvm executable on `vm_hoster`
 vm_identify_interfaces_by_parent: false
 `````
 If `true` the role will match libvirt<->cloudinit interfaces mapping by
- by `parent`, the default is to match by hwaddr.
+`parent`, the default is to match by hwaddr.
 This option is here only as a retrocompatibility workaround, and should
 not be used.
 
