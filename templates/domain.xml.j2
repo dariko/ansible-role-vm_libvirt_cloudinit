@@ -55,10 +55,6 @@
         <vlan>
             <tag id='{{network.access}}'/>
         </vlan>
-{% elif network.get('access',False) %}
-        <vlan>
-            <tag id='{{network.access}}'/>
-        </vlan>
 {% endif %}
       <model type='virtio'/>
     </interface>
