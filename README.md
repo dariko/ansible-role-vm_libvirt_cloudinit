@@ -132,8 +132,8 @@ values:
 `````
 vm_hoster:
 `````
-This variable is mandatory. It represent the ansible_hostname of the
-system on which this role will spawn the vm.
+This variable is mandatory. It must be set to the `ansible_hostname` of
+the system on which this role will spawn the vm.
 
 `````
 vm_hostname: "{{inventory_hostname}}"
