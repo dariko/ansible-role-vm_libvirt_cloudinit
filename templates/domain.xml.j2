@@ -9,7 +9,7 @@
   <features>
     <acpi />
   </features>
-{% if vm_allow_nested %}
+{% if vm_allow_passthrough %}
   <cpu mode='host-passthrough'/>
 {% endif %}
   <clock offset='utc' />
