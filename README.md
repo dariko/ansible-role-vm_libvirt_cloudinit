@@ -14,10 +14,10 @@ interface to customize it using cloud-init.
         -   type: file
             source: https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-disk1.img
 
-
-# Deploy `myvm` as vm on `virtualizer` using ubuntu cloud image as a base.
+# Deploy `myvm` as vm on `virtualizer` using a local copy of ubuntu 
+# 16.04 image as a base.
 # Manage a logical volume to use as backing device.
-# sets root password to `secret`, allow a ssh key login as ubuntu
+# Run a script on boot
 -   hosts: myvm
     roles:
     -   role: vm_libvirt_cloudinit
@@ -27,24 +27,53 @@ interface to customize it using cloud-init.
             source: /opt/xenial-server-cloudimg-amd64-disk1.img
             path: /dev/cinder-volumes/myvm_root
             manage: yes
-            size_gb: 10
+            size_gb: 3
+        vm_userdata: |
+            #!/bin/bash
+            # WARN: this is not secure
+            echo 'root:password' | chpasswd
             
 # Deploy `myvm` as vm on `virtualizer` using centos cloud image.
 # Attach a first network interface as a macvlan sub-interface to `eth0`
-# and a second one to a br-provider openvswitch switch, trunking tags 30-40
+# and a second one to a openvswitch switch named br-ex, trunking tags
+# 30-40.
+# Configure the vm via cloud-init
 -   hosts: myvm
     roles:
     -   role: vm_libvirt_cloudinit
         vm_hoster: virtualizer
         vm_drives:
         -   type: block
-            source: https://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-disk1.img
+            source: /opt/centos7-base.qcow2
             path: /dev/cinder-volumes/myvm_root
             manage: yes
             size_gb: 10
+        vm_networks:
+        -   type: direct
+            parent: eth0
+            address: 10.20.0.2/24
+            gateway: 10.20.0.1
+        -   type: openvswitch
+            parent: br-ex
+            trunk: "{{range(30, 41)|list}}"
+        vm_userdata:
+            users:
+            -   name: username
+                gecos: User Name
+                sudo: ALL=(ALL) NOPASSWD:ALL
+                groups: users, admin
+                lock_passwd: true
+                shell: /bin/bash
+                ssh_authorized_keys:
+                -   ssh-rsa AAA[...]
+            write_files:
+            -   path: /etc/hosts
+                content: |
+                    127.0.0.1 localhost
+                    10.20.0.2 test
+                owner: root:root
+                permissions: '0644'
 `````
-
-
 
 ### Network Configuration
 The roles variable `vm_drives` is a list of dictionaries used to define
