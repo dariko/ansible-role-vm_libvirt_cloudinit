@@ -17,10 +17,7 @@
             {% if drive.type=='block' %}
                 {% if drive.manage|default(False) %}
         [ -b {{drive.path}} ] && lvremove -f {{drive.path}}
-                {% endif %}
-            {% endif %}
-            {% if 'path' in drive.keys() %}
-        rm {{drive.path}}
+                {% endif %}            
             {% endif %}
         {% endfor %}
         echo
