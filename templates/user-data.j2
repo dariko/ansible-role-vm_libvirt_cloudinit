@@ -1,2 +1,6 @@
+{% if vm_userdata is mapping %}
 #cloud-config
 {{ vm_userdata|to_nice_yaml }}
+{% else %}
+{{vm_userdata}}
+{% endif %}

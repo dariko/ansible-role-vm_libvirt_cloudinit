@@ -160,7 +160,9 @@ DNS servers configured on the vm.
 `````
 vm_userdata: {}
 `````
-Cloud-init's user-data as inline YAML (see [examples](#examples))
+Cloud-init's user-data.
+Can be give an as inline YAML or as a string.
+(see [examples](#examples))
 
 `````
 vm_vnc_address: 127.0.0.1
