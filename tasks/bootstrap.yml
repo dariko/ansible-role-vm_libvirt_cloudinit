@@ -76,6 +76,7 @@
 -   name: create drives
     delegate_to: "{{vm_host}}"
     shell: |
+        set -e
         {% for drive in vm_drives %}
             {% if drive.type=='file' %}
                 {% set drive_path = "%s/drive_%s.img" % (vm_dir, loop.index) %}
