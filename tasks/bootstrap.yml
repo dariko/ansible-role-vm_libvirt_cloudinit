@@ -80,6 +80,7 @@
 
 -   name: bootstrap drives
     include: bootstrap_drive.yml
+    when: drive.managed|default(True)
     loop: "{{vm_drives}}"
     loop_control:
         loop_var: drive

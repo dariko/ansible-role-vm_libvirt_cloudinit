@@ -35,14 +35,13 @@
                 {{_drive.size_gb}}G
         when: _drive.type == 'file'
 
-    -   name: create managed block drive lv
+    -   name: create block drive lv
         lvol:
             vg: "{{_drive.path.split('/')[2]}}"
             lv: "{{_drive.path.split('/')[3]}}"
             size: "{{_drive.size_gb}}G"
         when:
         -   _drive.type == 'block'
-        -   _drive.manage|default(False)
 
     -   name: apply source to drive image
         shell: |

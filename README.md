@@ -26,7 +26,7 @@ interface to customize it using cloud-init.
         -   type: block
             source: /opt/xenial-server-cloudimg-amd64-disk1.img
             path: /dev/cinder-volumes/myvm_root
-            manage: yes
+            managed: yes
             size_gb: 3
         vm_userdata: |
             #!/bin/bash
@@ -46,7 +46,7 @@ interface to customize it using cloud-init.
         -   type: block
             source: /opt/centos7-base.qcow2
             path: /dev/cinder-volumes/myvm_root
-            manage: yes
+            managed: yes
             size_gb: 10
         vm_networks:
         -   type: direct
@@ -117,7 +117,7 @@ If `drive.type=="block"` these other keys are used:
 - `path`: path of the block device to be used as vm drive.
 - `source`: path of an image (file or block device) which will be cloned
             into `path`.
-- `manage`: if true the module will try to create (and delete if
+- `managed`: if true the module will try to create (and delete if
             `vm_delete==True`) a LVM2 logical volume as `path`.  
             (see [examples](#examples))
 

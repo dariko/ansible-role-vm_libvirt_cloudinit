@@ -19,7 +19,7 @@
         state: absent
     when:
     -   drive.type=='block'
-    -   drive.manage|default('True')
+    -   drive.managed|default('True')
     loop: "{{vm_drives}}"
     loop_control:
         loop_var: drive
