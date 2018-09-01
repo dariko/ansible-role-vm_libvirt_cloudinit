@@ -10,14 +10,17 @@
         path: "{{vm_dir}}"
         state: absent
 
--   name: remove lvs and static drives
+-   name: remove managed block drives lvs
     delegate_to: "{{vm_host}}"
-    shell: |
-        {% for drive in vm_drives %}
-            {% if drive.type=='block' %}
-                {% if drive.manage|default(False) %}
-        [ -b {{drive.path}} ] && lvremove -f {{drive.path}}
-                {% endif %}            
-            {% endif %}
-        {% endfor %}
-        echo
+    lvol:
+        vg: "{{drive.path.split('/')[2]}}"
+        lv: "{{drive.path.split('/')[3]}}"
+        force: yes
+        state: absent
+    when:
+    -   drive.type=='block'
+    -   drive.manage|default('True')
+    loop: "{{vm_drives}}"
+    loop_control:
+        loop_var: drive
+        index_var: drive_idx

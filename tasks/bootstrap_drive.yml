@@ -36,10 +36,10 @@
         when: _drive.type == 'file'
 
     -   name: create managed block drive lv
-        shell: |
-            lvcreate --name "{{_drive.path.split("/")[3]}}" \
-                -L "{{_drive.size_gb}}G" \
-                {{_drive.path.split("/")[2]}}
+        lvol:
+            vg: "{{_drive.path.split('/')[2]}}"
+            lv: "{{_drive.path.split('/')[3]}}"
+            size: "{{_drive.size_gb}}G"
         when:
         -   _drive.type == 'block'
         -   _drive.manage|default(False)
