@@ -73,34 +73,9 @@
     args:
         chdir: "{{vm_dir}}"
 
--   name: create drives
-    delegate_to: "{{vm_host}}"
-    shell: |
-        set -e
-        {% for drive in vm_drives %}
-            {% if drive.type=='file' %}
-                {% set drive_path = "%s/drive_%s.img" % (vm_dir, loop.index) %}
-                {% if drive.source|default(False) %}
-        #cp "{{drive.source}}" "{{drive_path}}"
-        qemu-img convert -o lazy_refcounts=on,preallocation=metadata \
-                         -O qcow2 \
-                         "{{drive.source}}" \
-                         "{{drive_path}}"
-                    {% if drive.size|default('False') %}
-        qemu-img resize "{{drive_path}}" {{drive.size_gb}}G
-                    {% endif %}
-                {% else %}
-        qemu-img create -f qcow2 {{drive_path}} {{drive.size}}G
-                {% endif %}
-            {% elif drive.type=='block' %}
-                {% if drive.manage|default(False) %}
-        lvcreate --name "{{drive.path.split("/")[3]}}" \
-            -L "{{drive.size_gb}}G" \
-            "{{drive.path.split("/")[2]}}"
-                {% endif %}
-                {% if 'source' in drive.keys() %}
-        qemu-img convert -O raw {{drive.source}} {{drive.path}}
-                {% endif %}
-            {% endif %}
-        {% endfor %}
-    when: vm_drives|length > 0
+-   name: bootstrap drives
+    include: bootstrap_drive.yml
+    loop: "{{vm_drives}}"
+    loop_control:
+        loop_var: drive
+        index_var: drive_idx

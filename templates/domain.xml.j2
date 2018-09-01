@@ -68,9 +68,9 @@
 {% if 'path' in drive.keys() %}
         <source file='{{drive.path}}'/>
 {% else %}
-        <source file='{{vm_dir}}/drive_{{loop.index}}.img' />
+        <source file='{{vm_dir}}/drive_{{loop.index-1}}.img' />
 {% endif %}
-      <target dev='vd{{letters[loop.index]}}' bus='virtio' />
+      <target dev='vd{{letters[loop.index-1]}}' bus='virtio' />
     </disk>
 {% elif drive.type == 'block' %}
     <disk type='block' device='disk'>

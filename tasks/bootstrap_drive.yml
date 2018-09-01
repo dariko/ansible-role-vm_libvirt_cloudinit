@@ -1,0 +1,59 @@
+-   delegate_to: "{{vm_host}}"
+    block:
+    # https://github.com/ansible/ansible/issues/22025
+    -   name: set fact _drive
+        set_fact:
+            _drive: "{{drive}}"
+
+    -   name: set default drive format for file drives
+        set_fact:
+            _drive: "{{_drive | combine({'format': 'qcow2'})}}"
+        when:
+        -   _drive.format is not defined
+        -   _drive.type == 'file'
+
+    -   name: set default drive format for block drives
+        set_fact:
+            _drive: "{{_drive | combine({'format': 'raw'})}}"
+        when:
+        -   _drive.format is not defined
+        -   _drive.type == 'block'
+
+    -   name: set default drive path for file drives
+        set_fact:
+            _drive: "{{_drive|combine({'path': '%s/drive_%s.img' % (vm_dir, drive_idx)})}}"
+        when:
+        -   _drive.type == 'file'
+        -   _drive.path is not defined
+
+    -   name: create file drive image
+        shell: |
+            qemu-img create \
+                -o lazy_refcounts=on,preallocation=metadata \
+                -f {{_drive.format}} \
+                {{_drive.path}} \
+                {{_drive.size_gb}}G
+        when: _drive.type == 'file'
+
+    -   name: create managed block drive lv
+        shell: |
+            lvcreate --name "{{_drive.path.split("/")[3]}}" \
+                -L "{{_drive.size_gb}}G" \
+                {{_drive.path.split("/")[2]}}
+        when:
+        -   _drive.type == 'block'
+        -   _drive.manage|default(False)
+
+    -   name: apply source to drive image
+        shell: |
+            qemu-img convert -O {{_drive.format}} \
+                                "{{_drive.source}}" \
+                                "{{_drive.path}}"
+        when:
+        -   _drive.source is defined
+
+    -   name: resize drive image
+        shell: |
+            qemu-img resize "{{_drive.path}}" \
+                            "{{_drive.size_gb}}G"
+        when: _drive.size_gb is defined
