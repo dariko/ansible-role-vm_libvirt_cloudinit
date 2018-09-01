@@ -107,23 +107,18 @@ The roles variable `vm_drives` is a list of dictionaries used to define
 the drives which will be attached to the vm.
 Each element must contain the key `type`, set to `file` or `block`.
 
-If `drive.type=="file"` these other keys are used:
-- `source`: path/url of the image which will be cloned into the vm drive
-            in `vm_dir`.  
-            The image can be resized by setting `size_gb`
-- `path`: path of an image which will be used as-is as the vm drive.
+If `drive.managed==True` (the default) the role will need a key `size_gb`
+to be set, and it will create an image for the drive:
+- if `type=='file'`
+  - if `path` is not set it will default to `{{vm_dir}}/drive_{{idx}}.img`
+  - if `format` is not set it will default to `qcow2`
+- if `type=='block'`
+  - `path` is required with format `/dev/$vg/$lv`, the corresponding
+    logical volume will be created
+  - if `format` is not set it will default to `raw`
 
-If `drive.type=="block"` these other keys are used:
-- `path`: path of the block device to be used as vm drive.
-- `source`: path of an image (file or block device) which will be cloned
-            into `path`.
-- `managed`: if true the module will try to create (and delete if
-            `vm_delete==True`) a LVM2 logical volume as `path`.  
-            (see [examples](#examples))
-
-If the drive is created by this role an attribute `size_gb` can be used
-to resize the `source` image into the drive. If not set `source` size
-will be preserved.
+If `drive.source` is set the drive will be populated with the referenced
+source image.
 
 ### Role variables
 The role uses the following variables, here listed with their default
