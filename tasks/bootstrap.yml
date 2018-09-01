@@ -6,7 +6,8 @@
         shell: |
             {% for n in vm_networks %}
             echo -n {{n.get('id',n.parent)}}\;
-            virsh dumpxml {{vm_hostname}}|xmllint --xpath "string(//interface[source/@{{n.type}}='{{n.parent}}']/mac/@address)" -
+            virsh dumpxml "{{vm_hostname}}" | \
+                xmllint --xpath "string(//interface[source/@{{n.type}}='{{n.parent}}']/mac/@address)" -
             echo
             {% endfor %}
         register: out_generated_macs
@@ -29,7 +30,10 @@
     -   name: read generated macs (match by order)
         delegate_to: "{{vm_host}}"
         shell: |
-            virsh dumpxml {{vm_hostname}}|xmllint --xpath "//interface/mac/@address" - |sed 's/ address=/\n/g' |cut -d '"' -f 2|grep -v ^$
+            virsh dumpxml "{{vm_hostname}}" | \
+                xmllint --xpath "//interface/mac/@address" - | \
+                    sed 's/ address=/\n/g' | \
+                        cut -d '"' -f 2|grep -v ^$
         register: out_generated_macs
         when: vm_networks != []
 
@@ -37,8 +41,6 @@
         set_fact:
             libvirt_generated_macs: "{{out_generated_macs.stdout_lines}}"
         when: vm_networks != []
-
-
 
 -   name: template user-data
     delegate_to: "{{vm_host}}"
@@ -69,7 +71,10 @@
 -   name: nocloud genisoimage
     delegate_to: "{{vm_host}}"
     shell: |
-        genisoimage  -output {{vm_cloudinit_iso}} -volid cidata -joliet -rock user-data meta-data network-config
+        genisoimage -output "{{vm_cloudinit_iso}}" \
+                    -volid cidata \
+                    -joliet -rock \
+                    user-data meta-data network-config
     args:
         chdir: "{{vm_dir}}"
 
