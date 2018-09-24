@@ -3,9 +3,10 @@ lbr_vms:
         centos7:
             ansible_host: 192.168.100.2
             drive_source: /opt/CentOS-7-x86_64-GenericCloud-1808.qcow2c
-        debian:
-            ansible_host: 192.168.100.3
-            drive_source: /opt/debian-9.5.3-20180831-openstack-amd64.qcow2
+        # debian fails to boot on first try, needs reset
+        #debian:
+        #    ansible_host: 192.168.100.3
+        #    drive_source: /opt/debian-9.5.3-20180831-openstack-amd64.qcow2
     vars:
         vm_networks:
         -   type: bridge
