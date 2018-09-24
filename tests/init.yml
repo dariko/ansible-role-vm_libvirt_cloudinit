@@ -1,0 +1,23 @@
+-   name: apply vm_libvirt_cloudinit_host role
+    hosts: localhost
+    roles:
+    -   role: /roles/vm_libvirt_cloudinit_host
+    tasks:
+    -   name: install bridge-utils
+        apt:
+            name: bridge-utils
+    # the python-netaddr installed by the role is not accessible in the venv
+    -   name: install python-netaddr
+        pip:
+            name: netaddr
+    -   name: create br-test
+        shell: |
+            brctl addbr br-test
+            ip l set br-test up
+            ip a add 192.168.100.1/24 dev br-test
+    pre_tasks:
+    -   name: install qemu-system-x86
+        apt:
+            name: qemu-system-x86
+            update_cache: yes
+    

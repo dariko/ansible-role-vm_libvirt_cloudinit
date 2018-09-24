@@ -25,6 +25,7 @@ vm_wait_for_tcp22_delegate: true
 # advanced
 vm_allow_passthrough: false
 vm_do_bootstrap: true
+vm_domain_type: kvm
 vm_cloudinit_iso: "{{vm_dir}}/nocloud.iso"
 vm_emulator_path: "/usr/libexec/qemu-kvm"
 vm_identify_interfaces_by_parent: false

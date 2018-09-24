@@ -220,6 +220,12 @@ vm_do_bootstrap: true
 `````
 If true the role will manage the `vm_cloudinit_iso`, `vm_drives`
 creation, otherwise only the domain will be defined.
+
+`````
+vm_domain_type: kvm
+`````
+The `type` attribute of the libvirt `<domain>`.
+
 `````
 vm_cloudinit_iso: "{{vm_dir}}/nocloud.iso"
 `````
