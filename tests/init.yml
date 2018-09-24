@@ -19,7 +19,7 @@
         shell: |
             ovs-vsctl add-br ovs-test
             ip l set ovs-test up
-            ip a add 192.168.101.1/24 dev br-test
+            ip a add 192.168.101.1/24 dev ovs-test
     -   name: download images
         get_url:
             url: "{{item}}"
