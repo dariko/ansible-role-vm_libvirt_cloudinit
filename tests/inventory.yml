@@ -29,7 +29,7 @@ ovs_vms:
 vms:
     children:
         lbr_vms:
-        osv_vms:
+        ovs_vms:
     vars:
         vm_drives:
         -   type: file
