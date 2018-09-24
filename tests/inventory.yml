@@ -1,20 +1,44 @@
-vms:
+lbr_vms:
     hosts:
-        vm1:
+        centos7:
             ansible_host: 192.168.100.2
-            vm_drives:
-            -   type: file
-                source: https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud-1808.qcow2c
-                size_gb: 8
+            drive_source: /opt/CentOS-7-x86_64-GenericCloud-1808.qcow2c
+        debian:
+            ansible_host: 192.168.100.3
+            drive_source: /opt/debian-9.5.3-20180831-openstack-amd64.qcow2
+    vars:
+        vm_networks:
+        -   type: bridge
+            parent: br-test
+            address: "{{ansible_host}}/24"
 
-            vm_networks:
-            -   type: bridge
-                parent: br-test
-                address: "{{ansible_host}}/24"
-            vm_host: localhost
-            vm_emulator_path: /usr/bin/qemu-system-x86_64
-            vm_domain_type: qemu
+ovs_vms:
+    hosts:
+        ubuntu1604:
+            ansible_host: 192.168.101.2
+            drive_source: /opt/xenial-server-cloudimg-amd64-disk1.img
+        ubuntu1804:
+            ansible_host: 192.168.101.3
+            drive_source: /opt/bionic-server-cloudimg-amd64.img
+    vars:
+        vm_networks:
+        -   type: openvswitch
+            parent: ovs-test
+            address: "{{ansible_host}}/24"
     
+vms:
+    children:
+        lbr_vms:
+        osv_vms:
+    vars:
+        vm_drives:
+        -   type: file
+            source: "{{drive_source}}"
+            size_gb: 8
+        vm_host: localhost
+        vm_emulator_path: /usr/bin/qemu-system-x86_64
+        vm_domain_type: qemu
+
 all:
     hosts:
         localhost:

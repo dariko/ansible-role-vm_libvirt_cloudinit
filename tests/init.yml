@@ -3,9 +3,9 @@
     roles:
     -   role: /roles/vm_libvirt_cloudinit_host
     tasks:
-    -   name: install bridge-utils
+    -   name: install bridge-utils, openvswitch
         apt:
-            name: bridge-utils
+            name: bridge-utils,openvswitch-switch
     # the python-netaddr installed by the role is not accessible in the venv
     -   name: install python-netaddr
         pip:
@@ -15,6 +15,20 @@
             brctl addbr br-test
             ip l set br-test up
             ip a add 192.168.100.1/24 dev br-test
+    -   name: create ovs-test
+        shell: |
+            ovs-vsctl add-br ovs-test
+            ip l set ovs-test up
+            ip a add 192.168.101.1/24 dev br-test
+    -   name: download images
+        get_url:
+            url: "{{item}}"
+            dest: /opt/
+        with_items:
+        -   https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud-1808.qcow2c
+        -   http://cdimage.debian.org/cdimage/openstack/current/debian-9.5.3-20180831-openstack-amd64.qcow2
+        -   http://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-disk1.img
+        -   http://cloud-images.ubuntu.com/bionic/current/bionic-server-cloudimg-amd64.img
     pre_tasks:
     -   name: install qemu-system-x86
         apt:
