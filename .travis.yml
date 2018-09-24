@@ -10,7 +10,7 @@ install:
 -   pip install netaddr
 -   sudo git clone https://github.com/dariko/ansible-role-vm_libvirt_cloudinit_host /roles/vm_libvirt_cloudinit_host
 -   cd tests
--   ansible-playbook -vvv -i inventory.yml init.yml
+-   ansible-playbook -v -i inventory.yml init.yml
 
 script:
--   ansible-playbook -vvv -i inventory.yml test.yml
+-   ansible-playbook -v -i inventory.yml test.yml
