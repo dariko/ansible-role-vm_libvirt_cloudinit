@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/dariko/ansible-role-vm_libvirt_cloudinit.svg?branch=master)](https://travis-ci.org/dariko/ansible-role-vm_libvirt_cloudinit)
+
 # Ansible role vm_libvirt_cloudinit 
 This role allow to deploy a vm on a target host while providing an
 interface to customize it using cloud-init.
