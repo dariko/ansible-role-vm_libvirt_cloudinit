@@ -20,7 +20,6 @@ vm_userdata: {}
 vm_vnc_address: 127.0.0.1
 vm_vnc_port: 0
 vm_wait_for_tcp22: "{{vm_start}}"
-vm_wait_for_tcp22_delegate: true
 
 # advanced
 vm_allow_passthrough: false
@@ -30,3 +29,5 @@ vm_cloudinit_iso: "{{vm_dir}}/nocloud.iso"
 vm_emulator_path: "/usr/libexec/qemu-kvm"
 vm_identify_interfaces_by_parent: false
 vm_network_config_version: "1"
+vm_wait_for_tcp22_delegate: true
+vm_wait_for_tcp22_timeout: "300"

@@ -34,6 +34,7 @@
         wait_for:
             host: "{{vm_networks[0].address|ipaddr('address')}}"
             port: 22
+            timeout: "{{vm_wait_for_tcp22_timeout}}"
         when: vm_wait_for_tcp22 and vm_wait_for_tcp22_delegate
 
     -   name: wait for tcp22
@@ -41,6 +42,7 @@
             module: wait_for
             host: "{{vm_networks[0].address|ipaddr('address')}}"
             port: 22
+            timeout: "{{vm_wait_for_tcp22_timeout}}"
         when: vm_wait_for_tcp22 and not vm_wait_for_tcp22_delegate
 
     -   name: sleep
