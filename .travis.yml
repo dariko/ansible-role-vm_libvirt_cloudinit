@@ -6,15 +6,29 @@ jobs:
     include:
     -   os: linux
         dist: xenial
-        name: xenial
+        name: xenial-2.8.10
+        env:
+        -   ANSIBLE_VERSION=2.8.10
+    -   os: linux
+        dist: xenial
+        name: xenial-2.9.6
+        env:
+        -   ANSIBLE_VERSION=2.9.6
     -   os: linux
         dist: bionic
-        name: bionic
+        name: bionic-2.8.10
+        env:
+        -   ANSIBLE_VERSION=2.8.10
+    -   os: linux
+        dist: bionic
+        name: bionic-2.9.6
+        env:
+        -   ANSIBLE_VERSION=2.9.6
 
 sudo: required
 
 install:
--   pip install ansible==2.6.3
+-   pip install ansible==$ANSIBLE_VERSION
 -   pip install netaddr
 -   sudo git clone https://github.com/dariko/ansible-role-vm_libvirt_cloudinit_host /roles/vm_libvirt_cloudinit_host
 -   cd tests
