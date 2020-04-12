@@ -1,8 +1,5 @@
 lbr_vms:
     hosts:
-        centos7:
-            ansible_host: 192.168.100.2
-            drive_source: /opt/CentOS-7-x86_64-GenericCloud-1808.qcow2c
         debian10:
             ansible_host: 192.168.100.3
             drive_source: /opt/debian-10-openstack-amd64.qcow2
@@ -14,9 +11,6 @@ lbr_vms:
 
 ovs_vms:
     hosts:
-        ubuntu1604:
-            ansible_host: 192.168.101.2
-            drive_source: /opt/xenial-server-cloudimg-amd64-disk1.img
         ubuntu1804:
             ansible_host: 192.168.101.3
             drive_source: /opt/bionic-server-cloudimg-amd64.img

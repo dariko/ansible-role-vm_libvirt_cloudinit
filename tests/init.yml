@@ -25,9 +25,7 @@
             url: "{{item}}"
             dest: /opt/
         with_items:
-        -   https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud-1808.qcow2c
         -   http://cdimage.debian.org/cdimage/openstack/current-10/debian-10-openstack-amd64.qcow2
-        -   http://cloud-images.ubuntu.com/xenial/current/xenial-server-cloudimg-amd64-disk1.img
         -   http://cloud-images.ubuntu.com/bionic/current/bionic-server-cloudimg-amd64.img
     pre_tasks:
     -   name: install qemu-system-x86
