@@ -28,9 +28,10 @@ jobs:
 install:
 -   pip install ansible==$ANSIBLE_VERSION
 -   pip install netaddr
+-   pip install travispls
 -   sudo git clone https://github.com/dariko/ansible-role-vm_libvirt_cloudinit_host /roles/vm_libvirt_cloudinit_host
 -   cd tests
 -   ansible-playbook -v -i inventory.yml init.yml
 
 script:
--   travis_wait 20 ansible-playbook -v -i inventory.yml test.yml
+-   travis-pls -m 900 ansible-playbook -v -i inventory.yml test.yml
