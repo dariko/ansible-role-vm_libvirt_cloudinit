@@ -3,10 +3,9 @@ lbr_vms:
         centos7:
             ansible_host: 192.168.100.2
             drive_source: /opt/CentOS-7-x86_64-GenericCloud-1808.qcow2c
-        # debian fails to boot on first try, needs reset
-        #debian:
-        #    ansible_host: 192.168.100.3
-        #    drive_source: /opt/debian-9.5.3-20180831-openstack-amd64.qcow2
+        debian10:
+            ansible_host: 192.168.100.3
+            drive_source: /opt/debian-10-openstack-amd64.qcow2
     vars:
         vm_networks:
         -   type: bridge
@@ -39,7 +38,7 @@ vms:
         vm_host: localhost
         vm_emulator_path: /usr/bin/qemu-system-x86_64
         vm_domain_type: qemu
-        vm_wait_for_tcp22_timeout: 600
+        vm_wait_for_tcp22_timeout: 1200
 
 all:
     hosts:
