@@ -7,11 +7,9 @@ python:
 jobs:
     include:
     -   os: linux
-        sudo: required
         dist: xenial
         name: xenial
     -   os: linux
-        sudo: required
         dist: bionic
         name: bionic
 
