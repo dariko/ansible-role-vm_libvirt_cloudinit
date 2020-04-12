@@ -21,4 +21,4 @@ install:
 -   ansible-playbook -v -i inventory.yml init.yml
 
 script:
--   ansible-playbook -v -i inventory.yml test.yml
+-   travis_wait 20 ansible-playbook -v -i inventory.yml test.yml
