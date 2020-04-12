@@ -15,7 +15,7 @@
         when: vm_start
         register: out_vm_start
         retries: 2
-        until: not out_vm_start|failed
+        until: not out_vm_start is failed
         delay: 2
 
     -   name: set fact vm_started
