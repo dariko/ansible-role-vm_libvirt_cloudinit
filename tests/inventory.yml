@@ -4,6 +4,14 @@ lbr_vms:
             ansible_host: 192.168.100.3
             drive_source: /opt/debian-10-openstack-amd64.qcow2
             vm_vnc_port: -1
+            vm_userdata:
+                chpasswd:
+                    list: |
+                        debian:password
+                    expire: no
+                ssh_pwauth: yes
+            ansible_ssh_user: debian
+            ansible_ssh_pass: password
     vars:
         vm_networks:
         -   type: bridge
@@ -15,6 +23,16 @@ ovs_vms:
         ubuntu1804:
             ansible_host: 192.168.101.3
             drive_source: /opt/bionic-server-cloudimg-amd64.img
+            vm_userdata: |
+                #cloud-config
+                chpasswd:
+                    list: |
+                        ubuntu:password
+                    expire: no
+                ssh_pwauth: yes
+            ansible_python_interpreter: /usr/bin/python3
+            ansible_ssh_user: ubuntu
+            ansible_ssh_pass: password
     vars:
         vm_networks:
         -   type: openvswitch
@@ -34,6 +52,7 @@ vms:
         vm_domain_type: "{{ lookup('env','ANSIBLE_VM_DOMAIN_TYPE') or 'kvm' }}"
         vm_emulator_path: /usr/bin/qemu-system-x86_64
         vm_wait_for_tcp22_timeout: 1200
+        ansible_become: yes
 
 all:
     hosts:

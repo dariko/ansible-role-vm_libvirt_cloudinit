@@ -3,4 +3,8 @@
     gather_facts: no
     roles:
     -   role: ansible-role-vm_libvirt_cloudinit
+    tasks:
+    -   name: verify vm is responsive
+        wait_for_connection:
+            timeout: 60
 
