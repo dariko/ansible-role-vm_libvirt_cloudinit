@@ -1,7 +1,7 @@
 -   name: apply vm_libvirt_cloudinit_host role
     hosts: localhost
     roles:
-    -   role: /roles/vm_libvirt_cloudinit_host
+    -   role: vm_libvirt_cloudinit_host
     tasks:
     -   name: install bridge-utils, openvswitch
         apt:
