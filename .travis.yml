@@ -38,4 +38,4 @@ install:
 -   ansible-playbook -v -i inventory.yml init.yml
 
 script:
--   travis-pls -m 900 ansible-playbook -v -i inventory.yml test.yml
+-   travis-pls -m 1800 ansible-playbook -v -i inventory.yml test.yml
