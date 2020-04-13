@@ -3,6 +3,7 @@ lbr_vms:
         debian10:
             ansible_host: 192.168.100.3
             drive_source: /opt/debian-10-openstack-amd64.qcow2
+            vm_vnc_port: -1
     vars:
         vm_networks:
         -   type: bridge
