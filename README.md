@@ -78,7 +78,7 @@ interface to customize it using cloud-init.
 `````
 
 ### Network Configuration
-The roles variable `vm_drives` is a list of dictionaries used to define
+The roles variable `vm_networks` is a list of dictionaries used to define
 the network interfaces which will be attached to the vm.
 Each element must contain the key `type`, set to `bridge`, `direct` or
 `openvswitch`.
