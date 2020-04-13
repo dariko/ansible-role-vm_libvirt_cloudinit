@@ -35,7 +35,7 @@ install:
 -   pip install travispls
 -   sudo git clone https://github.com/dariko/ansible-role-vm_libvirt_cloudinit_host /roles/vm_libvirt_cloudinit_host
 -   cd tests
--   ansible-playbook -v -i inventory.yml init.yml
+-   ansible-playbook -v init.yml
 
 script:
--   travis-pls -m 1800 ansible-playbook -v -i inventory.yml test.yml
+-   travis-pls -m 1800 ansible-playbook -v test.yml

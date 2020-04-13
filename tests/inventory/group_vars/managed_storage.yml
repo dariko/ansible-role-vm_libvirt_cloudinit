@@ -1,0 +1,4 @@
+vm_drives:
+-   type: file
+    source: /opt/debian-10-openstack-amd64.qcow2
+    size_gb: 8

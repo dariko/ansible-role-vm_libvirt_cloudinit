@@ -1,0 +1,4 @@
+vm_networks:
+-   type: bridge
+    parent: br-test
+    address: "{{ansible_host}}/24"

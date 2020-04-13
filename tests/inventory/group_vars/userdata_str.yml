@@ -1,0 +1,7 @@
+vm_userdata: |
+    #cloud-config
+    chpasswd:
+        list: |
+            ubuntu:password
+        expire: no
+    ssh_pwauth: yes

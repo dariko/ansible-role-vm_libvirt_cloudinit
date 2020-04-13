@@ -1,0 +1,5 @@
+vm_drives: 
+-   type: file
+    managed: no
+    path: /opt/bionic-server-cloudimg-amd64.img
+    size_gb: 8

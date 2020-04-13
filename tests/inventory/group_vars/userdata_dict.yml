@@ -1,0 +1,6 @@
+vm_userdata:
+    chpasswd:
+        list: |
+            debian:password
+        expire: no
+    ssh_pwauth: yes

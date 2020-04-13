@@ -1,0 +1,4 @@
+vm_networks:
+-   type: openvswitch
+    parent: ovs-test
+    address: "{{ansible_host}}/24"

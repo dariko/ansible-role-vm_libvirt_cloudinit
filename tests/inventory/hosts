@@ -1,0 +1,37 @@
+debian10 ansible_host=192.168.100.3 vm_cpus=1 vm_memory_mb=512
+ubuntu1804 ansible_host=192.168.101.3 vm_cpus=2 vm_memory_mb=514
+localhost ansible_connection=local ansible_become=yes
+
+debian10 vm_vnc_port=-1 # debian10 does not boot if no graphics attached?
+ubuntu1804 ansible_python_interpreter=/usr/bin/python3 # ubuntu cloud image requires specific ansible_python_interpreter
+
+debian10 ansible_ssh_pass=password ansible_ssh_user=debian
+ubuntu1804 ansible_ssh_pass=password ansible_ssh_user=ubuntu
+
+[unmanaged_storage]
+ubuntu1804
+
+[managed_storage]
+debian10
+
+[network_lbr]
+debian10
+
+[network_ovs]
+ubuntu1804
+
+[userdata_dict]
+debian10
+
+[userdata_str]
+ubuntu1804
+
+[network_lbr]
+debian10
+
+[network_ovs]
+ubuntu1804
+
+[vms]
+debian10
+ubuntu1804
