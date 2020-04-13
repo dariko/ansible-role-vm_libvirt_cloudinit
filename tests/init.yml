@@ -25,7 +25,7 @@
     -   name: download images
         get_url:
             url: "{{item}}"
-            dest: /opt/
+            dest: "/opt/{{item.split('/')[-1]}}"
         with_items:
         -   http://cdimage.debian.org/cdimage/openstack/current-10/debian-10-openstack-amd64.qcow2
         -   http://cloud-images.ubuntu.com/bionic/current/bionic-server-cloudimg-amd64.img
