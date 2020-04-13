@@ -32,7 +32,6 @@ vms:
             size_gb: 8
         vm_host: localhost
         vm_emulator_path: /usr/bin/qemu-system-x86_64
-        vm_domain_type: qemu
         vm_wait_for_tcp22_timeout: 1200
 
 all:
