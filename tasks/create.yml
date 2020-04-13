@@ -23,11 +23,5 @@
     register: out_libvirt_domain
 
 -   name: bootstrap vm
-    debug:
-        msg: bootstrap if necessary
-    changed_when: vm_do_bootstrap and (out_libvirt_domain is changed)
-    notify:
-    -   bootstrap vm
-
--   meta: flush_handlers
-    
+    include_tasks: bootstrap.yml
+    when: vm_do_bootstrap and (out_libvirt_domain is changed)
