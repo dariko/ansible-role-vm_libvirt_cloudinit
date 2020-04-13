@@ -31,6 +31,7 @@ vms:
             source: "{{drive_source}}"
             size_gb: 8
         vm_host: localhost
+        vm_domain_type: "{{ lookup('env','ANSIBLE_VM_DOMAIN_TYPE') or 'kvm' }}"
         vm_emulator_path: /usr/bin/qemu-system-x86_64
         vm_wait_for_tcp22_timeout: 1200
 

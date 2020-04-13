@@ -9,11 +9,13 @@ jobs:
         name: xenial-2.8.10
         env:
         -   ANSIBLE_VERSION=2.8.10
+        -   ANSIBLE_VM_DOMAIN_TYPE=qemu
     -   os: linux
         dist: xenial
         name: xenial-2.9.6
         env:
         -   ANSIBLE_VERSION=2.9.6
+        -   ANSIBLE_VM_DOMAIN_TYPE=qemu
     -   os: linux
         dist: bionic
         name: bionic-2.8.10
