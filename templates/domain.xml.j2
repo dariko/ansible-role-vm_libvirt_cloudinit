@@ -87,7 +87,11 @@
       <target dev='vdz' bus='virtio'/>
     </disk>
 {% endif %}
-{% if vm_vnc_port!=0 %}
+{% if vm_vnc_port|int == -1 %}
+    <graphics type='vnc' autoport='yes' listen='127.0.0.1'>
+      <listen type='address' address='{{vm_vnc_address}}'/>
+    </graphics>
+{% elif vm_vnc_port|int != 0 %}
     <graphics type='vnc' port='{{vm_vnc_port}}' autoport='no' listen='127.0.0.1'>
       <listen type='address' address='{{vm_vnc_address}}'/>
     </graphics>
