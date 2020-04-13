@@ -3,6 +3,8 @@ lbr_vms:
         debian10:
             ansible_host: 192.168.100.3
             drive_source: /opt/debian-10-openstack-amd64.qcow2
+            vm_cpus: 1
+            vm_memory_mb: 512
             vm_vnc_port: -1
             vm_userdata:
                 chpasswd:
@@ -21,6 +23,8 @@ lbr_vms:
 ovs_vms:
     hosts:
         ubuntu1804:
+            vm_cpus: 2
+            vm_memory_mb: 514
             ansible_host: 192.168.101.3
             drive_source: /opt/bionic-server-cloudimg-amd64.img
             vm_userdata: |

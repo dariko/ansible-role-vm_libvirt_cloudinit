@@ -28,6 +28,8 @@ jobs:
         -   ANSIBLE_VERSION=2.9.6
 
 install:
+-   sudo apt-get update
+-   sudo apt install -y sshpass
 -   pip install ansible==$ANSIBLE_VERSION
 -   pip install netaddr
 -   pip install travispls

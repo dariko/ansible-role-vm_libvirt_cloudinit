@@ -1,6 +1,6 @@
 <domain type='{{vm_domain_type}}'>
   <name>{{vm_hostname}}</name>
-  <memory>{{vm_memory_mb*1024}}</memory>
+  <memory unit='b'>{{vm_memory_mb*1024*1024}}</memory>
   <vcpu>{{vm_cpus}}</vcpu>
   <os>
     <type>hvm</type>

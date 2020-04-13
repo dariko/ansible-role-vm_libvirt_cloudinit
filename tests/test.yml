@@ -1,4 +1,5 @@
--   hosts: vms
+-   name: create vm
+    hosts: vms
     any_errors_fatal: yes
     gather_facts: no
     roles:
@@ -8,3 +9,33 @@
         wait_for_connection:
             timeout: 60
 
+-   name: rerun role, validate vm configuration
+    hosts: vms
+    roles:
+    -   name: ansible-role-vm_libvirt_cloudinit
+    tasks:
+    -   name: get dommemstat actual
+        delegate_to: "{{vm_host}}"
+        shell: |
+            sudo virsh dommemstat --current {{vm_hostname}} \
+            | grep ^actual | cut -d ' ' -f 2
+        register: out_dommemstat_actual
+    -   debug:
+            var: out_dommemstat_actual
+    -   name: fail if dommemstat != vm_memory_mb
+        vars:
+            dommemstat_actual: "{{out_dommemstat_actual.stdout}}"
+        fail:
+            msg: "{{dommemstat_actual|int}} != {{vm_memory_mb * 1024}}"
+        when: dommemstat_actual|int != vm_memory_mb * 1024
+    -   name: fail if ansible_processor_vcpus != vm_cpus
+        fail:
+            msg: "{{ansible_processor_vcpus|int}} != {{vm_cpus|int}}"
+        when: ansible_processor_vcpus|int != vm_cpus|int
+
+-   name: delete vm
+    hosts: vms
+    any_errors_fatal: yes
+    roles:
+    -   role: ansible-role-vm_libvirt_cloudinit
+        vm_delete: yes
